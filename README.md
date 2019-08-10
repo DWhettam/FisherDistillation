@@ -24,7 +24,7 @@ conda install tensorflow
 In general, the following code trains a teacher network:
 
 ```
-python main.py <DATASET> teacher --conv <CONV-TYPE> -t <TEACHER_CHECKPOINT> --wrn_depth <TEACHER_DEPTH> --wrn_width <TEACHER_WIDTH>
+python main.py <DATASET> teacher -t <TEACHER_CHECKPOINT> --teach_depth <TEACHER_DEPTH> --teach_width <TEACHER_WIDTH>
 ```
 
 Where `<DATASET>` is one of `cifar10`, `cifar100` or `imagenet`. By
@@ -44,7 +44,7 @@ python main.py cifar10 teacher --conv Conv -t wrn_40_2 --wrn_depth 40 --wrn_widt
 Students can be trained using KD (by setting alpha>0) and/or AT (by setting beta>0) as:
 
 ```
-python main.py <DATASET> student --conv <CONV-TYPE> -t <EXISTING TEACHER CHECKPOINT> -s <STUDENT CHECKPOINT> --wrn_depth <STUDENT_DEPTH> --wrn_width <STUDENT_WIDTH> --alpha <ALPHA for KD> --beta <BETA for AT>
+python main.py <DATASET> student -t <EXISTING TEACHER CHECKPOINT> -s <STUDENT CHECKPOINT> --student_depth <STUDENT_DEPTH> --student_width <STUDENT_WIDTH> --alpha <ALPHA for KD> --beta <BETA for AT>
 ```
   
 Note: the AT method uses KD by default, so to turn it off, set alpha to 0
