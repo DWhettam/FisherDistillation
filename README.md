@@ -1,6 +1,5 @@
-# Xdistill
+# Network Distillation using a Fisher expanded teacher
 
-MODIFICATION of code used to produce https://arxiv.org/abs/1711.02613
 
 ## Installation Instructions
 
@@ -59,10 +58,6 @@ python main.py cifar10 student --conv G8B2 -t wrn_40_2 -s wrn_40_2.g8b2.student 
 
 ## Acknowledgements
 
-[Elliot Crowley][elliot] did most of the development work on the initial
-version of this code, but the code is provided here without the full commit
-log for privacy reasons.
-
 The following repos provided basis and inspiration for this work:
 
 ```
@@ -76,13 +71,3 @@ https://github.com/ShichenLiu/CondenseNet
 
 If you would like to cite this work, please use the following bibtex entry:
 
-```
-@inproceedings{moonshine,
-  title={Moonshine: Distilling with Cheap Convolutions},
-  author={Crowley, Elliot~J. and Gray, Gavin and Storkey, Amos},
-  booktitle = {Advances in Neural Information Processing Systems},
-  year={2018}
-}
-```
-
-[elliot]: https://homepages.inf.ed.ac.uk/ecrowley/
