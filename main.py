@@ -48,8 +48,10 @@ parser.add_argument('--groups_file', default='darts_teach_groups.txt', type=str,
 parser.add_argument('--param_goal', default=1400000, type=int)
 
 # network stuff
-parser.add_argument('--depth', default=16, type=int, help='depth')
-parser.add_argument('--width', default=2, type=float, help='width')
+parser.add_argument('--student_depth', default=10, type=int, help='student depth')
+parser.add_argument('--student_width', default=2, type=float, help='student width')
+parser.add_argument('--teach_depth', default=25, type=int, help='teacher depth')
+parser.add_argument('--teach_width', default=2, type=float, help='teacher width')
 parser.add_argument('--module', default=None, type=str,
                     help='path to file containing custom Conv and maybe Block module definitions')
 parser.add_argument('--init_channels', type=int, default=16, help='num of init channels')
@@ -85,6 +87,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 device = torch.device(torch.cuda.current_device() if torch.cuda.is_available() else "cpu")
 writer = SummaryWriter()
 
+#overloads nets to return activations in forward()
 class ReturnLayers(nn.Module):
     def __init__(self, model):
         super(ReturnLayers, self).__init__()
@@ -390,7 +393,7 @@ if __name__ == '__main__':
 
   def load_network(teacher=True):
       if args.teacher_arch == 'densenet' and teacher :
-          net = ptcv_get_model("densenet40_k36_bc_cifar10", root = '/home/s1874193/Distillation/xdistill/pre_trained_models', pretrained=True)
+          net = ptcv_get_model("densenet40_k36_bc_cifar10", pretrained=True)
           net = ReturnLayers(net).to(device)
       elif args.teacher_arch == 'wrn' and teacher :
           net_checkpoint = torch.load('checkpoints/wrn_40_2_T.t7')
@@ -400,7 +403,7 @@ if __name__ == '__main__':
       elif args.teacher_arch == 'darts' and teacher and not args.fisher and not args.fisher_teacher:
           net_checkpoint = torch.load('checkpoints/%s.t7' % args.teacher_checkpoint)
           genotype = eval("genotypes.%s" % args.std_arch)
-          net = Network(args.init_channels, num_classes, 25, args.auxiliary, genotype).to(device)
+          net = Network(args.init_channels, num_classes, args.teach_depth, args.auxiliary, genotype).to(device)
           net.load_state_dict(net_checkpoint['state'])
       elif args.teacher_arch == 'darts' and teacher and args.fisher:
           net = rank_at_param_goal(args.std_arch, args.init_channels, 10, 10, args.auxiliary, \
@@ -408,13 +411,12 @@ if __name__ == '__main__':
       elif args.teacher_arch == 'darts' and teacher and args.fisher_teacher:
           net_checkpoint = torch.load('checkpoints/%s.t7' % args.teacher_checkpoint)
           genotype = eval("genotypes.%s" % args.std_arch)
-          net = Network(args.init_channels, num_classes, 10, args.auxiliary, genotype).to(device)
+          net = Network(args.init_channels, num_classes, args.student_depth, args.auxiliary, genotype).to(device)
           with open(args.groups_file, 'r+') as f:
             groups = f.readlines()
             group = 0
             for cell in net.cells:
                 for op in cell._ops:
-                    #print(groups[group])
                     if isinstance(op, SepConv) or isinstance(op, DilConv):
                       op.update(int(groups[group]))
                       group +=1
@@ -424,18 +426,14 @@ if __name__ == '__main__':
           net.load_state_dict(net_checkpoint['state'])
 
       elif args.student_arch == 'densenet' and not teacher :
-          net = ptcv_get_model("densenet100_k12_bc_cifar10", root = '/home/s1874193/Distillation/xdistill/pre_trained_models', pretrained=False)
+          net = ptcv_get_model("densenet100_k12_bc_cifar10", pretrained=False)
           net = ReturnLayers(net).to(device)
-          args.depth = 100
       elif args.student_arch == 'wrn' and not teacher :
-          net = WideResNet(16, 2, num_classes=num_classes, dropRate=0).to(device)
-          args.depth = 16
-          args.width = 2
+          net = WideResNet(args.student_depth, args.student_width, num_classes=num_classes, dropRate=0).to(device)
       elif args.student_arch == 'darts' and not teacher:
           genotype = eval("genotypes.%s" % args.std_arch)
-          net = Network(args.init_channels, num_classes, 10, args.auxiliary, genotype).to(device)
+          net = Network(args.init_channels, num_classes, args.student_depth, args.auxiliary, genotype).to(device)
           net.drop_path_prob = 0.2
-          args.depth = 10
       return net
 
   if args.mode == 'teacher':
