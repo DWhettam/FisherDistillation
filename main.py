@@ -36,7 +36,6 @@ parser.add_argument('--cifar_loc', default='/disk/scratch/s1874193/datasets/cifa
 #parser.add_argument('--cifar_loc', default='/afs/inf.ed.ac.uk/user/s18/s1874193/Desktop/', type=str, help='folder containing cifar train and val folders')
 #parser.add_argument('--cifar_loc', default='/home/dan/Desktop/Dissertation/xdistill/data', type=str, help='folder containing cifar train and val folders')
 parser.add_argument('--workers', default=2, type=int, help='No. of data loading workers. Make this high for imagenet')
-parser.add_argument('--resume', '-r', action='store_true', help='resume from checkpoint')
 parser.add_argument('--GPU', default='0', type=str, help='GPU to use')
 parser.add_argument('--student_checkpoint', '-s', default='wrn_40_2_student_KT', type=str, help='checkpoint to save/load student')
 parser.add_argument('--teacher_checkpoint', '-t', default='darts_teach', type=str, help='checkpoint to load in teacher')
@@ -438,16 +437,12 @@ if __name__ == '__main__':
 
   if args.mode == 'teacher':
 
-      if args.resume:
-          print('Mode Teacher: Loading teacher and continuing training...')
-          teach, start_epoch = load_network('checkpoints/%s.t7' % args.teacher_checkpoint)
-      else:
-          print('Mode Teacher: Making a teacher network from scratch and training it...')
-          if args.teacher_arch != None:
+      print('Mode Teacher: Making a teacher network from scratch and training it...')
+      if args.teacher_arch != None:
             teach = load_network(True)
           else:
             teach = load_network(False)
-
+            
       get_no_params(teach)
       optimizer = optim.SGD(teach.parameters(), lr=args.lr, momentum=0.9, weight_decay=args.weightDecay)
       scheduler = lr_scheduler.MultiStepLR(optimizer, milestones=epoch_step, gamma=args.lr_decay_ratio)
@@ -476,13 +471,9 @@ if __name__ == '__main__':
       # validate(teach)
       val_losses, val_errors = [], []  # or we'd save the teacher's error as the first entry
 
-      if args.resume:
-          print('Mode Student: Loading student and continuing training...')
-          student, start_epoch = load_network('checkpoints/%s.t7' % args.student_checkpoint)
-      else:
-          print('Mode Student: Making a student network from scratch and training it...')
+      print('Mode Student: Making a student network from scratch and training it...')
           student = load_network(False)
-
+        
       optimizer = optim.SGD(student.parameters(), lr=args.lr, momentum=0.9, weight_decay=args.weightDecay)
       scheduler = lr_scheduler.MultiStepLR(optimizer, milestones=epoch_step, gamma=args.lr_decay_ratio)
 
