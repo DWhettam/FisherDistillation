@@ -1,5 +1,5 @@
 # Network Distillation using a Fisher expanded teacher
-
+<!---
 
 ## Installation Instructions
 
@@ -71,3 +71,6 @@ https://github.com/ShichenLiu/CondenseNet
 
 If you would like to cite this work, please use the following bibtex entry:
 
+
+
+--->
