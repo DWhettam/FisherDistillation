@@ -8,7 +8,7 @@ model.py --- DARTS model code
 operations.py --- DARTS operations code  
 utils.py --- Extra utility functions  
 
-## Expanding a <odel
+## Expanding a Model
 
 ```
 python fisher_rank.py cifar10 --data_loc <cifar location> --base_model <model file>
