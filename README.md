@@ -1,4 +1,31 @@
 # Network Distillation using a Fisher expanded teacher
+## Files and Description
+activations.py -- A helper script for producing visualisations of a models activations  
+fisher_expand.py --- Code for expanding a given model using our Fisher expansion algorithm  
+funcs.py --- Functions used throughout the codebase  
+main.py --- Main script for performing distillation  
+model.py --- DARTS model code  
+operations.py --- DARTS operations code  
+utils.py --- Extra utility functions  
+
+## Expanding a <odel
+
+```
+python fisher_rank.py cifar10 --data_loc <cifar location> --base_model <model file>
+```
+
+## Training a Teacher
+
+```
+python main.py cifar10 -t <teacher checkpoint> --teach_arch <darts|densenet\wrn> 
+```
+
+## Training a Student
+
+```
+python main.py cifar10 -s <student checkpoint> --student_arch <darts|densenet\wrn> --teacher_arch <darts|densenet\wrn> 
+```
+
 <!---
 
 ## Installation Instructions
