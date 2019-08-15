@@ -17,13 +17,25 @@ python fisher_rank.py cifar10 --data_loc <cifar location> --base_model <model fi
 ## Training a Teacher
 
 ```
-python main.py cifar10 -t <teacher checkpoint> --teach_arch <darts|densenet\wrn> 
+python main.py cifar10 -t <teacher checkpoint> --teach_arch <darts|densenet|wrn> 
 ```
 
 ## Training a Student
 
 ```
-python main.py cifar10 -s <student checkpoint> --student_arch <darts|densenet\wrn> --teacher_arch <darts|densenet\wrn> 
+python main.py cifar10 -s <student checkpoint> --student_arch <darts|densenet|wrn> --teacher_arch <darts|densenet|wrn> 
+```
+
+## Acknowledgements
+The following repos provided basis and inspiration for this work
+```
+https://github.com/BayesWatch/xdistill
+https://github.com/quark0/darts
+https://github.com/BayesWatch/pytorch-blockswap
+https://github.com/szagoruyko/attention-transfer
+https://github.com/kuangliu/pytorch-cifar
+https://github.com/xternalz/WideResNet-pytorch
+https://github.com/ShichenLiu/CondenseNet
 ```
 
 <!---
