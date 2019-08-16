@@ -13,7 +13,7 @@ import argparse
 from pytorchcv.model_provider import get_model as ptcv_get_model
 import os
 from models import *
-from model import NetworkCIFAR as Network
+from models.darts import NetworkCIFAR as Network
 from tqdm import tqdm
 import re
 

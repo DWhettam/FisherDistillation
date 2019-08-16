@@ -6,7 +6,7 @@ import genotypes
 #import numpy as np
 from tqdm import tqdm
 from statistics import mean, median
-from model import NetworkCIFAR as Network
+from models.darts import NetworkCIFAR as Network
 import argparse
 from operations import *
 

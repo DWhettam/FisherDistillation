@@ -18,7 +18,7 @@ import time
 from funcs import *
 from operations import *
 from models import *
-from model import NetworkCIFAR as Network
+from models.darts import NetworkCIFAR as Network
 from tqdm import tqdm
 from pytorchcv.model_provider import get_model as ptcv_get_model
 from torch.autograd import Variable
@@ -442,7 +442,7 @@ if __name__ == '__main__':
             teach = load_network(True)
           else:
             teach = load_network(False)
-            
+
       get_no_params(teach)
       optimizer = optim.SGD(teach.parameters(), lr=args.lr, momentum=0.9, weight_decay=args.weightDecay)
       scheduler = lr_scheduler.MultiStepLR(optimizer, milestones=epoch_step, gamma=args.lr_decay_ratio)
@@ -473,7 +473,7 @@ if __name__ == '__main__':
 
       print('Mode Student: Making a student network from scratch and training it...')
           student = load_network(False)
-        
+
       optimizer = optim.SGD(student.parameters(), lr=args.lr, momentum=0.9, weight_decay=args.weightDecay)
       scheduler = lr_scheduler.MultiStepLR(optimizer, milestones=epoch_step, gamma=args.lr_decay_ratio)
 
