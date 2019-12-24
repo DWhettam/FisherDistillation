@@ -11,7 +11,7 @@ utils.py --- Extra utility functions
 ## Expanding a Model
 
 ```
-python fisher_rank.py cifar10 --data_loc <cifar location> --base_model <model file>
+python fisher_expand.py cifar10 --data_loc <cifar location> --base_model <model file>
 ```
 
 ## Training a Teacher
