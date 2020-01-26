@@ -1,5 +1,8 @@
 # Network Distillation using a Fisher expanded teacher
-## Files and Description
+This work formed my MSc Dissertation at The University of Edinburgh. A copy of the dissertation can be found [here](https://github.com/DWhettam/DWhettam.github.io/blob/master/Files/FindingTheRightTeacherForADifficultStudent.pdf).
+The work investigates ways to go about developing a teacher network for distillation when given a small, non-standard student network, typically developed through Neural Architecture Search. My method involved using Fisher information to determine which blocks of the student network to scale, developing a teacher network from the student. The student can then be trained by this new teacher via attention transfer, or knowledge distillation. 
+
+## Files
 activations.py -- A helper script for producing visualisations of a models activations  
 fisher_expand.py --- Code for expanding a given model using our Fisher expansion algorithm  
 funcs.py --- Functions used throughout the codebase  
