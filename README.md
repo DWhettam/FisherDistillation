@@ -1,5 +1,5 @@
 # Network Distillation using a Fisher expanded teacher
-This work formed my MSc Dissertation at The University of Edinburgh. A copy of the dissertation can be found [here](https://github.com/DWhettam/DWhettam.github.io/blob/master/Files/FindingTheRightTeacherForADifficultStudent.pdf).
+This work formed my MSc Dissertation at The University of Edinburgh. A copy of the dissertation can be found [here](https://dwhettam.github.io/files/Informatics_MSc_Dissertation.pdf).
 The work investigates ways to go about developing a teacher network for distillation when given a small, non-standard student network, typically developed through Neural Architecture Search. My method involved using Fisher information to determine which blocks of the student network to scale, developing a teacher network from the student. The student can then be trained by this new teacher via attention transfer, or knowledge distillation. 
 
 ## Files
